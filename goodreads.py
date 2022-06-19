@@ -1,4 +1,9 @@
+# Goodreads Quotes Scraper
+
+# Output Format
 import csv
+
+# Required Libraries
 import requests
 import lxml
 import requests
@@ -77,7 +82,6 @@ def quotes_by_author(author, page_num=None):
                 author = author.replace(",", "")
                 # author = author.replace("\n", "")
                 meta_data.append(author.strip())
-                # print(author)
             except:
                 meta_data.append(None)
 
@@ -103,5 +107,5 @@ def quotes_by_author(author, page_num=None):
 
     write_to_csv(quotes_list)
 
-
+# Call function
 quotes_by_author("jk rowling", 2)
