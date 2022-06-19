@@ -8,13 +8,13 @@ from bs4 import BeautifulSoup, NavigableString
 # Writes scrapped quotes to CSV file and saves it
 def write_to_csv(quotes_list):
 
-    new_data = open('rowling_q.csv', mode='a',
+    new_data = open('j_k_rowling.csv', mode='a',
                     encoding='utf-8-sig', newline='')
     csv_writer = csv.writer(new_data)
     s_no = 1
-    csv_writer.writerow(('S. No.', 'Quotation', 'Author', 'Tags'))
-    for [text, author, tags] in quotes_list:
-        csv_writer.writerow((s_no, text, author, tags))
+    csv_writer.writerow(('S. No.', 'Quotation', 'Author', 'Book', 'Tags'))
+    for [text, author, title, tags] in quotes_list:
+        csv_writer.writerow((s_no, text, author, title, tags))
         s_no = s_no + 1
 
 
@@ -81,13 +81,21 @@ def quotes_by_author(author, page_num=None):
             except:
                 meta_data.append(None)
 
+            # Get quote's book title
+            try:
+                title = quote.find(class_="authorOrTitle")
+                title = title.nextSibling.nextSibling.text
+                # title = title.replace("\n", "")
+                meta_data.append(title.strip())
+            except:
+                meta_data.append(None)
+
             # Get quote's tags
             try:
                 tags = quote.find(class_="greyText smallText left").text
                 tags = [x.strip() for x in tags.split(',')]
                 tags = tags[1:]
                 meta_data.append(tags)
-                # print(tags)
             except:
                 meta_data.append(None)
 
